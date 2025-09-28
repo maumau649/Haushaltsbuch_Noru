@@ -50,12 +50,6 @@ seer/
 - Git
 - min. 4GB RAM
 
-### Projekt klonen
-```bash
-git clone git@gitlab.rlp.net:mama1002/overseer.git
-cd seer
-```
-
 ### 2. Umgebungsdatei erstellen
 Erstelle eine `.env` Datei im Hauptverzeichnis:
 ```env
@@ -114,21 +108,7 @@ lsof -i :27017 # MongoDB
 ## Entwicklung
 ### Backend entwickeln
 ```bash
-# Backend-Logs verfolgen
-docker-compose logs -f backend
-
-# In Backend-Container
-docker-compose exec backend bash
-npm run dev  # Mit nodemon
-```
-
-### Frontend entwickeln
-```bash
-# Frontend-Logs verfolgen
-docker-compose logs -f frontend
-
-# Hot-Reload ist bereits aktiviert
-# Änderungen in src/ werden automatisch übernommen
+docker compose up --build
 ```
 
 ### API testen

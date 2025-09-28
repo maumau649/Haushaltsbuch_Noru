@@ -24,7 +24,7 @@ export const apiFetch = async (url, options = {}) => {
 
     // Debug logging für Development
     if (process.env.NODE_ENV === 'development') {
-      console.log('🌐 API Request:', {
+      console.log('API Request:', {
         url: `${BASE_URL}${url}`,
         method: options.method || 'GET',
         hasToken: !!token,
@@ -39,7 +39,7 @@ export const apiFetch = async (url, options = {}) => {
 
     // Response Debug
     if (process.env.NODE_ENV === 'development') {
-      console.log('📡 API Response:', {
+      console.log('API Response:', {
         status: response.status,
         statusText: response.statusText,
         ok: response.ok
@@ -66,7 +66,7 @@ export const apiFetch = async (url, options = {}) => {
     // Error Handling für verschiedene Status Codes
     if (response.status === 401) {
       // Token ungültig oder abgelaufen - aber NICHT automatisch weiterleiten
-      console.warn('🚨 Unauthorized - Token entfernt');
+      console.warn('Unauthorized - Token entfernt');
       localStorage.removeItem('authToken');
       
       throw new Error(data?.error?.message || data?.message || 'Authentifizierung erforderlich');
@@ -94,13 +94,13 @@ export const apiFetch = async (url, options = {}) => {
   } catch (error) {
     // Network oder andere Fehler
     if (error.name === 'TypeError' || error.message.includes('fetch')) {
-      console.error('🔌 Netzwerkfehler:', error);
+      console.error('Netzwerkfehler:', error);
       throw new Error('Verbindung zum Server fehlgeschlagen. Bitte prüfen Sie Ihre Internetverbindung.');
     }
 
     // Debug logging für Development
     if (process.env.NODE_ENV === 'development') {
-      console.error('🚨 API Fehler:', error);
+      console.error('API Fehler:', error);
     }
 
     // Weiterwerfen des ursprünglichen Fehlers
