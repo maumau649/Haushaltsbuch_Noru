@@ -16,26 +16,74 @@ seer/
 ├── docker-compose.yml          # Container-Orchestrierung
 ├── .env                       # Umgebungsvariablen
 ├── README.md                  # Diese Anleitung
+├── .gitignore
+|
 ├── backend/                   # Node.js Backend
 │   ├── Dockerfile
 │   ├── package.json
+|   ├── package-lock.json
+|   ├── .env
+|   ├── node_modules
+|   ├── tests
 │   └── src/
 │       ├── index.js          # Einstiegspunkt
 │       ├── server.js         # Express Server
-│       ├── controllers/      # Business Logic
+│       ├── controllers/      # Controller Logic
+|       |   ├── userController.js
+|       |   ├── plantsController.js
+|       |   ├── gardenController.js
+|       |   ├── fridgeController.js
+|       |   ├── investController.js
+|       |   ├── carController.js
+|       | 
 │       ├── middleware/       # Auth & Error Handling
-│       ├── models/          # Datenmodelle
-│       ├── routes/          # API Routen
-│       ├── clients/         # DB Verbindungen
-│       └── docs/           # Swagger Dokumentation
+|       |   ├── authMiddleware.js
+|       |   ├── errorMiddleware.js
+|       |   
+│       ├── models/           # Datenmodelle
+|       |   ├── user
+|       |   |   ├── User.js
+|       |   |   ├── userModel.js
+|       |   |   ├── userModelMongo.js
+|       |   |
+|       |   ├── plants
+|       |   |   ├── Plants.js
+|       |   |   ├── plantsModel.js
+|       |   |
+|       |   ├── garden
+|       |   |   ├── Garden.js
+|       |   |   ├── gardenModel.js
+|       |   |
+|       |   ├── fridge
+|       |   |
+|       |   |
+|       |   ├── invest
+|       |   |
+|       |   |
+|       |   ├── car
+|       |   |
+|       |   
+│       ├── routes/           # API Routen
+|       |   ├── userRoutes.js
+|       |   ├── plantsRoutes.js
+|       |   ├── gardenRoutes.js
+|       |   ├──
+|       |  
+│       ├── clients/          # DB Verbindungen
+|       |   ├── mongoClient.js
+|       |   ├── postgresClient.js
+|       |   
+│       └── docs/             # Swagger Dokumentation
+|
 ├── frontend/                 # React Frontend
 │   ├── Dockerfile
 │   ├── package.json
-│   └── src/
+│   ├── src/
 │       ├── index.js
 │       ├── App.js
 │       ├── components/      # React Komponenten
 │       └── utils/          # Helper Funktionen
+|   
 └── database/               # DB Initialisierung
     ├── postgres-init.sql
     └── mongo-init.js
@@ -45,13 +93,14 @@ seer/
 
 ## Installation & Start
 
-### Vorraussetzungen
+### 1. Vorraussetzungen
 - Docker & Docker Compose
 - Git
 - min. 4GB RAM
 
+
 ### 2. Umgebungsdatei erstellen
-Erstelle eine `.env` Datei im Hauptverzeichnis:
+1. Erstelle eine `.env` Datei im Hauptverzeichnis:
 ```env
 # Database Configuration
 PG_HOST=postgres
@@ -73,14 +122,31 @@ BACKEND_PORT=5000
 FRONTEND_PORT=3000
 ```
 
+
+
+2. Erstelle eine `.env` Datei im Backend-Ordner
+````env
+PG_HOST = localhost
+PG_PORT = 5432
+PG_USER = postgres
+PG_PASSWORD = ****
+PG_DATABASE = webappdb
+
+MONGO_URI = mongodb://Username:password@mongo:27017/webappdb?authSource=admin
+
+DATABASE_URL=postgresql://postgres:password@postgres_db:5432/webappdb
+
+JWT_SECRET = ****
+````
+
+
 ### 3. Anwendung starten
 ```bash
 # Alle Container bauen und starten
 docker-compose up --build
-
-# Im Hintergrund starten
-docker-compose up --build -d
 ```
+
+
 
 ### 4. Zugriff auf die Anwendung
 - **Frontend**: http://localhost:3000
@@ -100,7 +166,7 @@ lsof -i :5000  # Backend
 lsof -i :5432  # PostgreSQL
 lsof -i :27017 # MongoDB
 
-# Ändere Ports in docker-compose.yml falls nötig
+# Änderung von Ports in docker-compose.yml 
 ```
 
 
@@ -129,13 +195,6 @@ curl -X POST http://localhost:5000/api/users/login \
 
 
 
-## Deployment
-### Produktion vorbereiten
-1. Ändere alle Passwörter in `.env`
-2. Setze `NODE_ENV=production`
-3. Generiere neuen JWT_SECRET
-4. Konfiguriere Reverse Proxy (nginx)
-
 ### Container stoppen
 ```bash
 # Alle Container stoppen
@@ -143,4 +202,5 @@ docker-compose down
 
 # Container + Volumes löschen (VORSICHT: Daten werden gelöscht!)
 docker-compose down -v
+
 ```
